@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using Autodesk.Revit.DB;
 
-namespace VisibilityDiagnostic
+namespace RevitVisibilityDiagnostic_R24
 {
     public static class VisibilityChecker
     {

@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace VisibilityDiagnostic
+namespace RevitVisibilityDiagnostic_R24
 {
     public class DiagnosticResult
     {

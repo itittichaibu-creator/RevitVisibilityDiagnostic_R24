@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RevitAddIns>
-  <AddIn Type="Command">
-    <Name>Visibility Diagnostic Tool</Name>
-    <Assembly>VisibleDiagnostic2024/VisibilityDiagnostic.dll</Assembly>
+  <AddIn Type="Application">
+    <Name>Visibility Diagnostic App</Name>
+    <Assembly>RevitVisibilityDiagnostic_R24.dll</Assembly>
     <AddInId>E024F339-4E67-4CA1-82BB-A9A5B4C5D6E7</AddInId>
-    <FullClassName>VisibilityDiagnostic.Command</FullClassName>
+    <FullClassName>RevitVisibilityDiagnostic_R24.App</FullClassName>
     <VendorId>com.typeBIM</VendorId>
     <VendorDescription>BIMTools</VendorDescription>
     <Text>Visibility Diagnostic</Text>

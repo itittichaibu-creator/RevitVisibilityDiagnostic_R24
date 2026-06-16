@@ -3,7 +3,7 @@ using Autodesk.Revit.Attributes;
 using Autodesk.Revit.DB;
 using Autodesk.Revit.UI;
 
-namespace VisibilityDiagnostic
+namespace RevitVisibilityDiagnostic_R24
 {
     [Transaction(TransactionMode.Manual)]
     public class Command : IExternalCommand

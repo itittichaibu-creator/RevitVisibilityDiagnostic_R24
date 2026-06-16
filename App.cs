@@ -3,7 +3,7 @@ using System.Reflection;
 using System.Windows.Media.Imaging;
 using Autodesk.Revit.UI;
 
-namespace VisibilityDiagnostic
+namespace RevitVisibilityDiagnostic_R24
 {
     public class App : IExternalApplication
     {

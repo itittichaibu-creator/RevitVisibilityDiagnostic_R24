@@ -6,7 +6,7 @@ using System.Windows.Threading;
 using Autodesk.Revit.DB;
 using Autodesk.Revit.UI;
 
-namespace VisibilityDiagnostic.UI
+namespace RevitVisibilityDiagnostic_R24.UI
 {
     public partial class DiagnosticWindow : Window
     {

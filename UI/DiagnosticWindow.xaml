@@ -1,4 +1,4 @@
-<Window x:Class="VisibilityDiagnostic.UI.DiagnosticWindow"
+<Window x:Class="RevitVisibilityDiagnostic_R24.UI.DiagnosticWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Visibility Diagnostic Tool (Real-time)" Height="450" Width="550"
