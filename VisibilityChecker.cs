@@ -13,7 +13,12 @@ namespace RevitVisibilityDiagnostic_R24
             // 1. Check if Element is permanently hidden in the view
             if (element.IsHidden(view))
             {
-                results.Add(new DiagnosticResult("Hide in View (Element)", "The element is explicitly hidden in this view.", true));
+                results.Add(new DiagnosticResult("Hide in View (Element)", "The element is explicitly hidden in this view.", true)
+                {
+                    CanFix = true,
+                    ActionType = FixActionType.UnhideElement,
+                    TargetId = element.Id
+                });
             }
             else
             {
@@ -26,7 +31,12 @@ namespace RevitVisibilityDiagnostic_R24
             {
                 if (view.GetCategoryHidden(cat.Id))
                 {
-                    results.Add(new DiagnosticResult("Visibility/Graphics (Category)", $"The category '{cat.Name}' is turned off in V/G.", true));
+                    results.Add(new DiagnosticResult("Visibility/Graphics (Category)", $"The category '{cat.Name}' is turned off in V/G.", true)
+                    {
+                        CanFix = true,
+                        ActionType = FixActionType.UnhideCategory,
+                        TargetId = cat.Id
+                    });
                 }
                 else
                 {
@@ -49,7 +59,12 @@ namespace RevitVisibilityDiagnostic_R24
                     {
                         Workset workset = doc.GetWorksetTable().GetWorkset(worksetId);
                         string wsName = workset != null ? workset.Name : worksetId.ToString();
-                        results.Add(new DiagnosticResult("Worksets", $"The workset '{wsName}' is hidden in this view.", true));
+                        results.Add(new DiagnosticResult("Worksets", $"The workset '{wsName}' is hidden in this view.", true)
+                        {
+                            CanFix = true,
+                            ActionType = FixActionType.UnhideWorkset,
+                            TargetWorksetId = worksetId
+                        });
                     }
                     else
                     {
@@ -75,7 +90,11 @@ namespace RevitVisibilityDiagnostic_R24
                 }
                 else
                 {
-                    results.Add(new DiagnosticResult("Temporary Hide/Isolate", "The element is hidden by the Temporary Hide/Isolate tool (glasses icon).", true));
+                    results.Add(new DiagnosticResult("Temporary Hide/Isolate", "The element is hidden by the Temporary Hide/Isolate tool (glasses icon).", true)
+                    {
+                        CanFix = true,
+                        ActionType = FixActionType.DisableTemporaryHide
+                    });
                 }
             }
             else
@@ -95,7 +114,12 @@ namespace RevitVisibilityDiagnostic_R24
                     {
                         if (filter.GetElementFilter().PassesFilter(doc, element.Id))
                         {
-                            results.Add(new DiagnosticResult("View Filters", $"The element is caught by filter '{filter.Name}' which has visibility turned off.", true));
+                            results.Add(new DiagnosticResult("View Filters", $"The element is caught by filter '{filter.Name}' which has visibility turned off.", true)
+                            {
+                                CanFix = true,
+                                ActionType = FixActionType.UnhideFilter,
+                                TargetId = filterId
+                            });
                             hiddenByFilter = true;
                         }
                     }

@@ -138,6 +138,18 @@ namespace RevitVisibilityDiagnostic_R24.UI
             _exEvent.Raise();
         }
 
+        private void FixButton_Click(object sender, RoutedEventArgs e)
+        {
+            var button = sender as System.Windows.Controls.Button;
+            var diagnosticResult = button?.DataContext as DiagnosticResult;
+
+            if (diagnosticResult != null && diagnosticResult.CanFix)
+            {
+                _handler.PendingFix = diagnosticResult;
+                _exEvent.Raise(); // Trigger the External Event to run the fix and then refresh
+            }
+        }
+
         private void OnResultReady(DiagnosticResultData data)
         {
             Dispatcher.Invoke(() =>

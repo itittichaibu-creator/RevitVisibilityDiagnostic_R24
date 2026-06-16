@@ -57,10 +57,23 @@
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="20"/>
                                     <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
                                 </Grid.ColumnDefinitions>
                                 
                                 <TextBlock Grid.Column="0" x:Name="IconText" FontFamily="Segoe UI Emoji" Text="✅" VerticalAlignment="Top"/>
                                 <TextBlock Grid.Column="1" x:Name="MessageText" Text="{Binding Message}" TextWrapping="Wrap" FontFamily="Consolas" VerticalAlignment="Top"/>
+                                <Button Grid.Column="2" Content=" Fix " Margin="5,0,0,0" Padding="5,0" Click="FixButton_Click" VerticalAlignment="Top" Background="#FFD5E8D4" BorderBrush="#FF82B366" Foreground="#FF333333">
+                                    <Button.Style>
+                                        <Style TargetType="Button">
+                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding CanFix}" Value="True">
+                                                    <Setter Property="Visibility" Value="Visible"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Button.Style>
+                                </Button>
                             </Grid>
                             
                             <DataTemplate.Triggers>

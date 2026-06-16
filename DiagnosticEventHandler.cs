@@ -16,6 +16,7 @@ namespace RevitVisibilityDiagnostic_R24
     {
         public Action<DiagnosticResultData> OnResultReady { get; set; }
         public View TargetView { get; set; }
+        public DiagnosticResult PendingFix { get; set; }
 
         public void Execute(UIApplication app)
         {
@@ -28,6 +29,46 @@ namespace RevitVisibilityDiagnostic_R24
 
             View viewToCheck = TargetView ?? doc.ActiveView;
             if (viewToCheck == null) return;
+
+            if (PendingFix != null)
+            {
+                using (Transaction t = new Transaction(doc, "Fix Visibility Issue"))
+                {
+                    t.Start();
+                    try
+                    {
+                        if (PendingFix.ActionType == FixActionType.UnhideElement)
+                        {
+                            viewToCheck.UnhideElements(new List<ElementId> { PendingFix.TargetId });
+                        }
+                        else if (PendingFix.ActionType == FixActionType.UnhideCategory)
+                        {
+                            viewToCheck.SetCategoryHidden(PendingFix.TargetId, false);
+                        }
+                        else if (PendingFix.ActionType == FixActionType.UnhideWorkset)
+                        {
+                            viewToCheck.SetWorksetVisibility(PendingFix.TargetWorksetId, WorksetVisibility.Visible);
+                        }
+                        else if (PendingFix.ActionType == FixActionType.DisableTemporaryHide)
+                        {
+                            if (viewToCheck.IsTemporaryHideIsolateActive())
+                            {
+                                viewToCheck.DisableTemporaryViewMode(TemporaryViewMode.TemporaryHideIsolate);
+                            }
+                        }
+                        else if (PendingFix.ActionType == FixActionType.UnhideFilter)
+                        {
+                            viewToCheck.SetFilterVisibility(PendingFix.TargetId, true);
+                        }
+                        t.Commit();
+                    }
+                    catch (Exception)
+                    {
+                        t.RollBack();
+                    }
+                }
+                PendingFix = null;
+            }
 
             ICollection<ElementId> selectedIds = uidoc.Selection.GetElementIds();
 
