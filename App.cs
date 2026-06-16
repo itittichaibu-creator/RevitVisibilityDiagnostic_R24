@@ -33,7 +33,7 @@ namespace RevitVisibilityDiagnostic_R24
                 "cmdVisibilityDiagnostic",
                 "Visibility\nDiagnostic",
                 assemblyPath,
-                "VisibilityDiagnostic.Command");
+                "RevitVisibilityDiagnostic_R24.Command");
 
             buttonData.ToolTip = "Diagnoses why an element is not visible in the current view.";
 
