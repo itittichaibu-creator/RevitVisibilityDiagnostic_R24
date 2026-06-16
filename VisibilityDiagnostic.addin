@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RevitAddIns>
+  <AddIn Type="Command">
+    <Name>Visibility Diagnostic Tool</Name>
+    <Assembly>VisibleDiagnostic2024/VisibilityDiagnostic.dll</Assembly>
+    <AddInId>E024F339-4E67-4CA1-82BB-A9A5B4C5D6E7</AddInId>
+    <FullClassName>VisibilityDiagnostic.Command</FullClassName>
+    <VendorId>com.typeBIM</VendorId>
+    <VendorDescription>BIMTools</VendorDescription>
+    <Text>Visibility Diagnostic</Text>
+    <Description>Diagnoses why an element is not visible in the current view.</Description>
+  </AddIn>
+</RevitAddIns>
