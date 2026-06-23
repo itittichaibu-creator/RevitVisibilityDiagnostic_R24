@@ -1,4 +1,4 @@
-<h1 align="center">🔍 Revit Visibility Diagnostic (R24)</h1>
+﻿<h1 align="center">🔍 Revit Visibility Diagnostic (R24)</h1>
 
 <p align="center">
   <strong>เครื่องมือวินิจฉัยแบบ Real-time สุดทรงพลังสำหรับ Autodesk Revit 2024 ช่วยค้นหาสาเหตุว่าทำไมโมเดลถึงมองไม่เห็นใน View</strong>
@@ -32,13 +32,12 @@
   - หลุดระยะ View Range ไปหรือไม่? (สำหรับมุมมองแปลน)
 
 ## 🛠️ การติดตั้ง (Installation)
-1. Build โปรเจกต์ผ่าน Visual Studio
-2. คัดลอกไฟล์ `RevitVisibilityDiagnostic_R24.dll` ไปยังโฟลเดอร์ Add-ins ของ Revit
-3. คัดลอกไฟล์ `RevitVisibilityDiagnostic_R24.addin` ไปที่โฟลเดอร์เดียวกัน:
+1. ไปที่ `Release\Revit2024`
+2. คัดลอกไฟล์ `RevitVisibilityDiagnostic_R24.addin` ชั้นนอก พร้อมโฟลเดอร์ `RevitVisibilityDiagnostic_R24` ทั้งโฟลเดอร์
+3. นำไปวางคู่กันที่:
    `%APPDATA%\Autodesk\Revit\Addins\2024`
-4. ตรวจสอบให้แน่ใจว่าพาธ `<Assembly>` ในไฟล์ `.addin` ชี้ไปยังตำแหน่งไฟล์ `.dll` ของคุณอย่างถูกต้อง
-5. ปิดแล้วเปิดโปรแกรม Revit ใหม่อีกครั้ง
-
+4. ตรวจสอบให้แน่ใจว่า `<Assembly>` ในไฟล์ `.addin` ชี้ไปที่ `RevitVisibilityDiagnostic_R24\RevitVisibilityDiagnostic_R24.dll`
+5. ปิดแล้วเปิดโปรแกรม Revit ใหม่อีกครั้ง และกด **Always Load** เมื่อมีหน้าต่างแจ้งเตือน
 ## 🚀 วิธีใช้งาน (How to Use)
 1. เปิด Autodesk Revit 2024 และเปิดโปรเจกต์ของคุณ
 2. ไปที่แท็บ Ribbon: **`BIMTools`**
@@ -52,3 +51,4 @@
 
 ---
 *พัฒนาด้วย ❤️ เพื่อยกระดับการทำงานสาย BIM*
+

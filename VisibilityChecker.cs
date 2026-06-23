@@ -162,6 +162,169 @@ namespace RevitVisibilityDiagnostic_R24
                 results.Add(new DiagnosticResult("Crop Region", "Crop Region is not active. Skipped.", false, true));
             }
 
+            // 7. Check Detail Level
+            try
+            {
+                ViewDetailLevel viewDl = view.DetailLevel;
+                OverrideGraphicSettings elemOverride = null;
+                OverrideGraphicSettings catOverride = null;
+
+                if (view.AreGraphicsOverridesAllowed())
+                {
+                    try { elemOverride = view.GetElementOverrides(element.Id); } catch { }
+                    if (element.Category != null)
+                    {
+                        try { catOverride = view.GetCategoryOverrides(element.Category.Id); } catch { }
+                    }
+                }
+
+                string detailLevelMsg = $"View Detail Level: {viewDl}.";
+                if (elemOverride != null && elemOverride.DetailLevel != ViewDetailLevel.Undefined)
+                {
+                    detailLevelMsg += $" Element Override: {elemOverride.DetailLevel}.";
+                }
+                else if (catOverride != null && catOverride.DetailLevel != ViewDetailLevel.Undefined)
+                {
+                    detailLevelMsg += $" Category Override: {catOverride.DetailLevel}.";
+                }
+                results.Add(new DiagnosticResult("Detail Level", detailLevelMsg, false));
+            }
+            catch (Exception ex)
+            {
+                results.Add(new DiagnosticResult("Detail Level", $"Could not check: {ex.Message}", false, true));
+            }
+
+            // 8. Check Visual Style
+            try
+            {
+                DisplayStyle viewStyle = view.DisplayStyle;
+                results.Add(new DiagnosticResult("Visual Style", $"View Visual Style is set to: {viewStyle}.", false));
+            }
+            catch (Exception ex)
+            {
+                results.Add(new DiagnosticResult("Visual Style", $"Could not check: {ex.Message}", false, true));
+            }
+
+            // 9. Check Phasing
+            try
+            {
+                Parameter viewPhaseParam = view.get_Parameter(BuiltInParameter.VIEW_PHASE);
+                Parameter viewPhaseFilterParam = view.get_Parameter(BuiltInParameter.VIEW_PHASE_FILTER);
+
+                string viewPhaseName = "None";
+                if (viewPhaseParam != null && viewPhaseParam.AsElementId() != ElementId.InvalidElementId)
+                {
+                    var pElem = doc.GetElement(viewPhaseParam.AsElementId());
+                    if (pElem != null) viewPhaseName = pElem.Name;
+                }
+
+                string phaseFilterName = "None";
+                if (viewPhaseFilterParam != null && viewPhaseFilterParam.AsElementId() != ElementId.InvalidElementId)
+                {
+                    var pfElem = doc.GetElement(viewPhaseFilterParam.AsElementId());
+                    if (pfElem != null) phaseFilterName = pfElem.Name;
+                }
+
+                ElementId createdPhaseId = element.CreatedPhaseId;
+                ElementId demolishedPhaseId = element.DemolishedPhaseId;
+
+                string createdPhaseName = "None";
+                if (createdPhaseId != null && createdPhaseId != ElementId.InvalidElementId)
+                {
+                    var cElem = doc.GetElement(createdPhaseId);
+                    if (cElem != null) createdPhaseName = cElem.Name;
+                }
+
+                string demolishedPhaseName = "None";
+                if (demolishedPhaseId != null && demolishedPhaseId != ElementId.InvalidElementId)
+                {
+                    var dElem = doc.GetElement(demolishedPhaseId);
+                    if (dElem != null) demolishedPhaseName = dElem.Name;
+                }
+
+                string phaseMsg = $"View Phase: {viewPhaseName} (Filter: {phaseFilterName}).\nElement Created: {createdPhaseName}, Demolished: {demolishedPhaseName}.";
+                bool isHiddenByPhase = false;
+
+                PhaseArray phases = doc.Phases;
+                int viewPhaseIndex = -1;
+                int createdPhaseIndex = -1;
+                int demolishedPhaseIndex = -1;
+
+                if (phases != null)
+                {
+                    for (int i = 0; i < phases.Size; i++)
+                    {
+                        Phase p = phases.get_Item(i);
+                        if (viewPhaseParam != null && p.Id == viewPhaseParam.AsElementId()) viewPhaseIndex = i;
+                        if (createdPhaseId != null && p.Id == createdPhaseId) createdPhaseIndex = i;
+                        if (demolishedPhaseId != null && p.Id == demolishedPhaseId) demolishedPhaseIndex = i;
+                    }
+                }
+
+                if (createdPhaseIndex != -1 && viewPhaseIndex != -1 && viewPhaseIndex < createdPhaseIndex)
+                {
+                    isHiddenByPhase = true;
+                    phaseMsg += "\n(Element created after view phase)";
+                }
+                else if (demolishedPhaseIndex != -1 && viewPhaseIndex != -1 && viewPhaseIndex >= demolishedPhaseIndex)
+                {
+                    phaseMsg += "\n(Element demolished in or before view phase)";
+                }
+
+                results.Add(new DiagnosticResult("Phasing", phaseMsg, isHiddenByPhase));
+            }
+            catch (Exception ex)
+            {
+                results.Add(new DiagnosticResult("Phasing", $"Could not check: {ex.Message}", false, true));
+            }
+
+            // 10. Check Discipline
+            try
+            {
+                ViewDiscipline viewDiscipline = view.Discipline;
+                string categoryName = element.Category != null ? element.Category.Name : "None";
+                bool isHiddenByDiscipline = false;
+                string disciplineMsg = $"View Discipline: {viewDiscipline}.\nElement Category: {categoryName}.";
+
+                if (element.Category != null)
+                {
+                    BuiltInCategory bic = (BuiltInCategory)element.Category.Id.Value;
+
+                    if (viewDiscipline == ViewDiscipline.Structural)
+                    {
+                        List<BuiltInCategory> archCategories = new List<BuiltInCategory>
+                        {
+                            BuiltInCategory.OST_Doors, BuiltInCategory.OST_Windows, BuiltInCategory.OST_Furniture,
+                            BuiltInCategory.OST_FurnitureSystems, BuiltInCategory.OST_Casework, BuiltInCategory.OST_Planting,
+                            BuiltInCategory.OST_Entourage, BuiltInCategory.OST_PlumbingFixtures, BuiltInCategory.OST_SpecialityEquipment,
+                            BuiltInCategory.OST_Ceilings, BuiltInCategory.OST_RoofSoffit, BuiltInCategory.OST_Fascia,
+                            BuiltInCategory.OST_Gutter, BuiltInCategory.OST_CurtainWallPanels, BuiltInCategory.OST_CurtainWallMullions
+                        };
+
+                        if (archCategories.Contains(bic))
+                        {
+                            isHiddenByDiscipline = true;
+                            disciplineMsg += "\n(Architectural elements are typically hidden in Structural views)";
+                        }
+                        else if (bic == BuiltInCategory.OST_Walls)
+                        {
+                            Parameter structUsage = element.get_Parameter(BuiltInParameter.WALL_STRUCTURAL_USAGE_PARAM);
+                            if (structUsage != null && structUsage.AsInteger() == 0) // 0 is NonBearing
+                            {
+                                isHiddenByDiscipline = true;
+                                disciplineMsg += "\n(Non-bearing walls are typically hidden in Structural views)";
+                            }
+                        }
+                    }
+                }
+
+                results.Add(new DiagnosticResult("Discipline", disciplineMsg, isHiddenByDiscipline));
+            }
+            catch (Exception ex)
+            {
+                results.Add(new DiagnosticResult("Discipline", $"Could not check: {ex.Message}", false, true));
+            }
+
             return results;
         }
     }

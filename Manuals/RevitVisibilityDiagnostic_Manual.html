@@ -1,0 +1,76 @@
+﻿<!DOCTYPE html>
+<html lang="th">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>🔍 Revit Visibility Diagnostic (R24)</title><style>body{font-family:'Prompt','Segoe UI',sans-serif;margin:0;background:#f3f4f6;color:#1f2937;line-height:1.65}.container{max-width:1080px;margin:0 auto;padding:40px 24px 64px}header{margin-bottom:28px;border-bottom:1px solid #d1d5db;padding-bottom:20px}h1{margin:0 0 8px;font-size:2.2rem;color:#be185d}h2{margin-top:30px;color:#be185d}h3,h4{color:#374151}section{background:#fff;border:1px solid #e5e7eb;border-radius:8px;padding:22px 26px;margin:18px 0}code{background:#f3f4f6;color:#be185d;padding:2px 5px;border-radius:4px}pre{background:#111827;color:#f9fafb;padding:14px;border-radius:6px;overflow-x:auto}ul{padding-left:1.35rem}hr{border:0;border-top:1px solid #e5e7eb;margin:20px 0}</style></head>
+<body><main class="container"><header><h1>🔍 Revit Visibility Diagnostic (R24)</h1><p>คู่มือย่อยนี้สร้างจากข้อมูลใน <code>Custom Tools.html</code> เพื่อให้เนื้อหาการติดตั้งตรงกับคู่มือหลัก</p></header><section><h2>ภาพรวม</h2><p>เคยสงสัยไหมครับว่า *&quot;ทำไมฉันถึงมองไม่เห็นโมเดลชิ้นนี้ใน View?&quot;*</p>
+<p>ปลั๊กอิน <strong>Visibility Diagnostic</strong> คือผู้ช่วยที่จะมาประหยัดเวลาของคุณ! ด้วยหน้าต่างวิเคราะห์แบบ Modeless ที่เป็นมิตรต่อผู้ใช้งาน คุณสามารถตรวจสอบสาเหตุทั้งหมดที่ทำให้โมเดลหายไปใน View นั้นๆ ได้แบบ Real-time</p>
+<p>บอกลาการคลิกสุ่มหาใน Visibility/Graphics (VV), View Ranges หรือ Filters แบบเดิมๆ ไปได้เลย!</p></section><section><h2>การใช้งาน</h2><h4>🔌 การใช้งานฝั่ง C# Addin</h4>
+<ul>
+<li>เปิดโปรแกรม Revit ที่ติดตั้ง Add-in ไว้แล้ว</li>
+<li>มองหาแท็บเมนู <strong>MTC Tools</strong> หรือ <strong>BIMTools</strong> บนแถบ Ribbon</li>
+<li>คลิกปุ่มคำสั่งของเครื่องมือนี้ (<code>IExternalCommand</code>) หน้าต่าง UI จะแสดงขึ้นมา</li>
+<li>ทำตามขั้นตอนที่ระบุบนหน้าต่าง UI เพื่อจัดการกับโมเดล และกด Execute</li>
+</ul></section><section><h2>การติดตั้ง</h2><h4>🔌 การติดตั้งฝั่ง C# Addin</h4>
+<ul>
+<li>ไปที่โฟลเดอร์ <code>Release</code> และเลือกชุดที่ตรงกับ Revit ที่ใช้งาน (เช่น <code>Release\Revit2024</code>, <code>Release\Revit2025</code>, <code>Release\Revit2026</code>)</li>
+<li>คัดลอกไฟล์ <code>.addin</code> ชั้นนอก พร้อมโฟลเดอร์ชื่อเครื่องมือที่อยู่ข้างกันทั้งโฟลเดอร์ ห้ามหยิบเฉพาะ DLL จาก <code>bin</code>, <code>obj</code> หรือจากในโฟลเดอร์ย่อย</li>
+<li>นำไฟล์ <code>.addin</code> และโฟลเดอร์ชื่อเครื่องมือไปวางคู่กันที่โฟลเดอร์ Addins ของ Revit:</li>
+</ul>
+<p><code>%APPDATA%\Autodesk\Revit\Addins\20XX\</code></p>
+<ul>
+<li>ตรวจสอบในไฟล์ <code>.addin</code> ว่าพาธในแท็ก <code>&lt;Assembly&gt;</code> ชี้ไปที่ <code>ชื่อโฟลเดอร์\ชื่อไฟล์.dll</code> เช่นเดียวกับโครงสร้าง Release package</li>
+<li>เปิดโปรแกรม Revit ระบบจะถามหาสิทธิ์การโหลด ให้กดปุ่ม <strong>Always Load</strong></li>
+</ul></section><section><h2>คู่มือฉบับเต็ม / หมายเหตุผู้ดูแล</h2><p>&lt;h1 align=&quot;center&quot;&gt;🔍 Revit Visibility Diagnostic (R24)&lt;/h1&gt;</p>
+<p>&lt;p align=&quot;center&quot;&gt;</p>
+<p>&lt;strong&gt;เครื่องมือวินิจฉัยแบบ Real-time สุดทรงพลังสำหรับ Autodesk Revit 2024 ช่วยค้นหาสาเหตุว่าทำไมโมเดลถึงมองไม่เห็นใน View&lt;/strong&gt;</p>
+<p>&lt;/p&gt;</p>
+<p>&lt;p align=&quot;center&quot;&gt;</p>
+<p>&lt;img src=&quot;https://img.shields.io/badge/Revit%20API-2024-blue?style=for-the-badge&amp;logo=autodesk&quot; alt=&quot;Revit 2024&quot;&gt;</p>
+<p>&lt;img src=&quot;https://img.shields.io/badge/Language-C%23-239120?style=for-the-badge&amp;logo=c-sharp&quot; alt=&quot;C#&quot;&gt;</p>
+<p>&lt;img src=&quot;https://img.shields.io/badge/UI-WPF-512BD4?style=for-the-badge&quot; alt=&quot;WPF&quot;&gt;</p>
+<p>&lt;/p&gt;</p>
+<hr>
+<h3>💡 ภาพรวม (Overview)</h3>
+<p>เคยสงสัยไหมครับว่า *&quot;ทำไมฉันถึงมองไม่เห็นโมเดลชิ้นนี้ใน View?&quot;*</p>
+<p>ปลั๊กอิน <strong>Visibility Diagnostic</strong> คือผู้ช่วยที่จะมาประหยัดเวลาของคุณ! ด้วยหน้าต่างวิเคราะห์แบบ Modeless ที่เป็นมิตรต่อผู้ใช้งาน คุณสามารถตรวจสอบสาเหตุทั้งหมดที่ทำให้โมเดลหายไปใน View นั้นๆ ได้แบบ Real-time</p>
+<p>บอกลาการคลิกสุ่มหาใน Visibility/Graphics (VV), View Ranges หรือ Filters แบบเดิมๆ ไปได้เลย!</p>
+<h3>✨ ฟีเจอร์หลัก (Key Features)</h3>
+<ul>
+<li>🚀 <strong>วิเคราะห์แบบ Real-time:</strong> ใช้งานผ่านหน้าต่าง WPF แบบ Modeless สามารถเปิดค้างไว้ระหว่างทำงานและคลิกเช็คโมเดลต่างๆ ได้ตลอดเวลา</li>
+<li>🎯 <strong>ค้นหา View ที่ต้องการได้ทันที:</strong> มีช่อง ComboBox ที่รองรับระบบพิมพ์ค้นหา (Filter-as-you-type) ช่วยให้เข้าถึง View ที่ต้องการได้อย่างรวดเร็ว</li>
+<li>🚦 <strong>แสดงผลลัพธ์ด้วยสีสันชัดเจน:</strong> อ่านค่าสถานะได้ทันที (🟢 สีเขียว = แสดงผลปกติ, 🔴 สีแดง = ถูกซ่อน/ถูกบล็อก)</li>
+<li>🧩 <strong>ตรวจสอบครอบคลุมทุกจุด:</strong> เช็คเงื่อนไขเหล่านี้ให้อัตโนมัติ:</li>
+<li>โมเดลถูกสั่งซ่อนถาวรอยู่หรือไม่? (<code>Hide in View</code>)</li>
+<li>หมวดหมู่ (Category) หรือ Subcategory ถูกซ่อนไว้หรือไม่?</li>
+<li>โมเดลหลุดกรอบ Crop Region ไปหรือเปล่า?</li>
+<li>Workset ถูกปิด หรือถูกซ่อนใน View นี้หรือไม่?</li>
+<li>โดน View Filters ทับซ้อนจนมองไม่เห็นหรือไม่?</li>
+<li>การตั้งค่า Phase ส่งผลต่อการมองเห็นไหม?</li>
+<li>หลุดระยะ View Range ไปหรือไม่? (สำหรับมุมมองแปลน)</li>
+</ul>
+<h3>🛠️ การติดตั้ง (Installation)</h3>
+<h4>🔌 การติดตั้งฝั่ง C# Addin</h4>
+<ul>
+<li>ไปที่โฟลเดอร์ <code>Release</code> และเลือกชุดที่ตรงกับ Revit ที่ใช้งาน (เช่น <code>Release\Revit2024</code>, <code>Release\Revit2025</code>, <code>Release\Revit2026</code>)</li>
+<li>คัดลอกไฟล์ <code>.addin</code> ชั้นนอก พร้อมโฟลเดอร์ชื่อเครื่องมือที่อยู่ข้างกันทั้งโฟลเดอร์ ห้ามหยิบเฉพาะ DLL จาก <code>bin</code>, <code>obj</code> หรือจากในโฟลเดอร์ย่อย</li>
+<li>นำไฟล์ <code>.addin</code> และโฟลเดอร์ชื่อเครื่องมือไปวางคู่กันที่โฟลเดอร์ Addins ของ Revit:</li>
+</ul>
+<p><code>%APPDATA%\Autodesk\Revit\Addins\20XX\</code></p>
+<ul>
+<li>ตรวจสอบในไฟล์ <code>.addin</code> ว่าพาธในแท็ก <code>&lt;Assembly&gt;</code> ชี้ไปที่ <code>ชื่อโฟลเดอร์\ชื่อไฟล์.dll</code> เช่นเดียวกับโครงสร้าง Release package</li>
+<li>เปิดโปรแกรม Revit ระบบจะถามหาสิทธิ์การโหลด ให้กดปุ่ม <strong>Always Load</strong></li>
+</ul>
+<h3>🚀 วิธีใช้งาน (How to Use)</h3>
+<ul>
+<li>เปิด Autodesk Revit 2024 และเปิดโปรเจกต์ของคุณ</li>
+<li>ไปที่แท็บ Ribbon: <strong><code>BIMTools</code></strong></li>
+<li>ในพาเนล <strong><code>Diagnostics</code></strong> ให้คลิกที่ปุ่ม <strong><code>Visibility Diagnostic R24</code></strong></li>
+<li>หน้าต่างเครื่องมือจะปรากฏขึ้น ให้กรอกรหัส <strong>Element ID</strong> ของโมเดลที่หายไป</li>
+<li>พิมพ์ค้นหาและเลือก <strong>Target View</strong> ที่คุณกำลังเจอปัญหา</li>
+<li>คลิกปุ่ม <strong><code>Check Visibility</code></strong> เพื่อดูสาเหตุที่แท้จริงว่าทำไมโมเดลถึงถูกซ่อนไว้!</li>
+</ul>
+<h3>🧑‍💻 ประวัติการพัฒนา (Development Log)</h3>
+<p>โปรเจกต์นี้มีไฟล์บันทึกการอัปเดตแบบละเอียด (<code>CODEX_UPDATE_LOG.md</code>) (ใช้เป็นการภายใน) เพื่อติดตามการสร้างฟีเจอร์, การแก้ไข UI และการตั้งค่าระบบต่างๆ ระหว่างการพัฒนา</p>
+<hr>
+<p>*พัฒนาด้วย ❤️ เพื่อยกระดับการทำงานสาย BIM*</p></section><section><h2>แผนพัฒนา / หมายเหตุ</h2><p>โปรเจกต์นี้มีไฟล์บันทึกการอัปเดตแบบละเอียด (<code>CODEX_UPDATE_LOG.md</code>) (ใช้เป็นการภายใน) เพื่อติดตามการสร้างฟีเจอร์, การแก้ไข UI และการตั้งค่าระบบต่างๆ ระหว่างการพัฒนา</p>
+<hr>
+<p>*พัฒนาด้วย ❤️ เพื่อยกระดับการทำงานสาย BIM*</p></section></main></body></html>

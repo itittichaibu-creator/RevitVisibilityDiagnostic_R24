@@ -9,7 +9,7 @@ namespace RevitVisibilityDiagnostic_R24
     {
         public Result OnStartup(UIControlledApplication application)
         {
-            string tabName = "BIMTools";
+            string tabName = "MTC Tools";
             string panelName = "Diagnostics";
 
             // Create a custom ribbon tab
